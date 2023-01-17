@@ -1,0 +1,21 @@
+name: 'Build Linux amd64 Artifact'
+on:
+  release:
+    types: [released]
+
+env:
+  TAG_NAME: ${{ github.event.inputs.TAG_NAME || github.event.release.tag_name }}
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: release
+        run: ./release.sh
+      - uses: actions/upload-artifact@v3
+        with:
+          name: artifact
+          path: .release/*.tgz
